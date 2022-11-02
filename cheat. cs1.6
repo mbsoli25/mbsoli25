@@ -1,0 +1,49 @@
+- 👋 Hi, I’m @mbsoli25
+- 👀 I’m interested in ...
+- 🌱 I’m currently learning ...
+- 💞️ I’m looking to collaborate on ...
+- 📫 How to reach me ...
+
+<!---
+mbsoli25/mbsoli25 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+You can click the Preview link to take a look at your changes.
+--->
+#включить <iostream>
+#включить <Windows.h>
+#включить <строка>
+
+int main() {
+ DWORD actual_money = 0x0B9754D4; //Адрес в памяти, который хранит деньги
+ DWORD pId; //Переменная для ID процесса - т.е. поток контры
+	int new_money = 10;
+	
+	//Ищем окно с контрой
+	auto hWind = FindWindow(0, "Counter-Strike");
+
+	//Получаем процесс и проверяем на то, что нашли 
+	GetWindowThreadProcessId(hWind, &pId);
+	если (!hWind) {
+ std::cout << "Процесс не найден!";
+		возврат -1;
+	}
+
+	//открываем наш процесс и просим полный доступ
+ ОБРАБОТАЙТЕ pHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pId); 
+	если (!pHandle) {
+ std::cout << "Не открывайте процессы!";
+		возврат -1;
+	}
+
+	//Читаем, что находится по нашему адресу в памяти и записываем его в new_money
+	ReadProcessMemory(pHandle, (LPVOID)actual_money, &new_money, sizeof(new_money), 0);
+ std::cout << "Фактические деньги: " << new_money << std::endl;
+
+ std::cout << "Нужны деньги: ";
+ std::cin >> new_money;
+	
+	//Меняем значение по адресу в памяти на наше значение new_money
+	WriteProcessMemory(pHandle, (LPVOID)actual_money, &new_money, sizeof(new_money), 0);
+ std::cout << "Новые деньги: " << new_money;
+
+	возвращает 0;
+}
